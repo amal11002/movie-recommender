@@ -4,20 +4,41 @@ import os
 
 def download_movielens():
     url = "https://files.grouplens.org/datasets/movielens/ml-100k.zip"
-    os.makedirs("data", exist_ok=True)
-    
-    print("Téléchargement de MovieLens 100K")
-    response = requests.get(url)
-    
-    zip_path = "data/ml-100k.zip"
-    with open(zip_path, "wb") as f:
-        f.write(response.content)
-    
-    print("Extraire les données")
-    with zipfile.ZipFile(zip_path, "r") as zip_ref:
-        zip_ref.extractall("data/")
-    
-    print("Terminé ! Données dans data")
+    data_dir = "data"
+    zip_path = os.path.join(data_dir, "ml-100k.zip")
+    extract_path = os.path.join(data_dir, "ml-100k")
+
+    os.makedirs(data_dir, exist_ok=True)
+
+    # ✅ Vérifie si déjà téléchargé
+    if os.path.exists(extract_path):
+        print("Données déjà téléchargées ✔")
+        return
+
+    print("Téléchargement de MovieLens 100K...")
+
+    try:
+        response = requests.get(url, stream=True)
+        response.raise_for_status()
+
+        with open(zip_path, "wb") as f:
+            for chunk in response.iter_content(chunk_size=8192):
+                f.write(chunk)
+
+    except requests.exceptions.RequestException as e:
+        print(f"Erreur téléchargement : {e}")
+        return
+
+    print("Extraction des données...")
+
+    try:
+        with zipfile.ZipFile(zip_path, "r") as zip_ref:
+            zip_ref.extractall(data_dir)
+    except zipfile.BadZipFile:
+        print("Erreur : fichier ZIP corrompu")
+        return
+
+    print("Terminé ✔ Données prêtes dans data/ml-100k")
 
 if __name__ == "__main__":
     download_movielens()

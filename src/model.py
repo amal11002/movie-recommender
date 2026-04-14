@@ -22,11 +22,8 @@ class NeuMF(nn.Module):
             mlp_input_dim = output_dim
         self.mlp = nn.Sequential(*layers)
 
-        # --- Couche de fusion + Sigmoid ---
-        self.output_layer = nn.Sequential(
-            nn.Linear(embedding_dim + mlp_layers[-1], 1),
-            nn.Sigmoid()
-        )
+        # --- Couche de fusion ---
+        self.output_layer = nn.Linear(embedding_dim + mlp_layers[-1], 1)
 
         self._init_weights()
 
@@ -37,7 +34,7 @@ class NeuMF(nn.Module):
         for layer in self.mlp:
             if isinstance(layer, nn.Linear):
                 nn.init.xavier_uniform_(layer.weight)
-        nn.init.kaiming_uniform_(self.output_layer[0].weight)
+        nn.init.kaiming_uniform_(self.output_layer.weight)
 
     def forward(self, user_ids, movie_ids):
         # Branche GMF
@@ -52,4 +49,4 @@ class NeuMF(nn.Module):
 
         # Fusion + Sigmoid
         combined = torch.cat([gmf_out, mlp_out], dim=-1)
-        return self.output_layer(combined).squeeze()
+        return self.output_layer(combined).view(-1)
