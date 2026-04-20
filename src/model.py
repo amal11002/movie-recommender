@@ -34,7 +34,7 @@ class NeuMF(nn.Module):
         for layer in self.mlp:
             if isinstance(layer, nn.Linear):
                 nn.init.xavier_uniform_(layer.weight)
-        nn.init.kaiming_uniform_(self.output_layer.weight)
+        nn.init.kaiming_uniform_(self.output_layer.weight, nonlinearity='linear')
 
     def forward(self, user_ids, movie_ids):
         # Branche GMF

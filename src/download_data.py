@@ -10,9 +10,9 @@ def download_movielens():
 
     os.makedirs(data_dir, exist_ok=True)
 
-    # ✅ Vérifie si déjà téléchargé
+    #  Vérifie si déjà téléchargé
     if os.path.exists(extract_path):
-        print("Données déjà téléchargées ✔")
+        print("Données déjà téléchargées ")
         return
 
     print("Téléchargement de MovieLens 100K...")
@@ -29,7 +29,7 @@ def download_movielens():
         print(f"Erreur téléchargement : {e}")
         return
 
-    print("Extraction des données...")
+    print("Extraction des données")
 
     try:
         with zipfile.ZipFile(zip_path, "r") as zip_ref:
@@ -38,7 +38,7 @@ def download_movielens():
         print("Erreur : fichier ZIP corrompu")
         return
 
-    print("Terminé ✔ Données prêtes dans data/ml-100k")
+    print("Terminé  Données prêtes dans data/ml-100k")
 
 if __name__ == "__main__":
     download_movielens()

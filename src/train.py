@@ -13,7 +13,7 @@ from model import NeuMF
 EMBEDDING_DIM = 32
 MLP_LAYERS    = [64, 32, 16]
 BATCH_SIZE    = 256
-EPOCHS        = 10
+EPOCHS        = 50
 LR            = 0.001
 THRESHOLD     = 0.5
 MODEL_PATH    = "data/neumf_model.pt"
