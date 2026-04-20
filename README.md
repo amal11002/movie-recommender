@@ -127,3 +127,13 @@ python src/train.py
 
 L'architecture fonctionne. Le RMSE remonte après l'epoch 3 (overfitting léger) à ce stade, la Phase 3 s'occupera d'optimiser ça.
 
+## Phase 3 — Interface StreamliT
+
+### Scripts
+
+#### `src/app.py`
+Interface interactive avec deux modes de recommandation :
+- **Par films** : tape un titre, le système trouve l'utilisateur le plus similaire parmi les 943 profils
+- **Par genres** : sélectionne un ou plusieurs genres, le système retourne les films les mieux scorés
+pip install streamlit
+streamlit run src/app.py
