@@ -20,7 +20,7 @@ movies = pd.read_csv(
 print("Valeurs manquantes ratings :", ratings.isnull().sum().sum())
 print("Valeurs manquantes movies :", movies.isnull().sum().sum())
 
-# Re-indexer user_id et movie_id à partir de 0 (nécessaire pour PyTorch)
+# indexer user_id et movie_id à partir de 0 
 ratings["user_id"] = ratings["user_id"] - 1
 ratings["movie_id"] = ratings["movie_id"] - 1
 

@@ -15,7 +15,7 @@ def download_movielens():
         print("Données déjà téléchargées ")
         return
 
-    print("Téléchargement de MovieLens 100K...")
+    print("Téléchargement de MovieLens 100K")
 
     try:
         response = requests.get(url, stream=True)

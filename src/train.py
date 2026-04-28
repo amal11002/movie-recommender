@@ -7,9 +7,9 @@ import os
 from dataset import MovieLensDataset
 from model import NeuMF
 
-# =========================
+
 # CONFIG
-# =========================
+
 EMBEDDING_DIM = 32
 MLP_LAYERS    = [64, 32, 16]
 BATCH_SIZE    = 256
@@ -18,9 +18,9 @@ LR            = 0.001
 THRESHOLD     = 0.5
 MODEL_PATH    = "data/neumf_model.pt"
 
-# =========================
-# CHARGEMENT MAPPING (IMPORTANT)
-# =========================
+
+# CHARGEMENT MAPPING 
+
 df_train = pd.read_csv("data/train.csv")
 df_test  = pd.read_csv("data/test.csv")
 
@@ -36,18 +36,17 @@ num_movies = len(movie2idx)
 
 print(f"Utilisateurs : {num_users} | Films : {num_movies}")
 
-# =========================
+
 # DATASET + DATALOADER
-# =========================
+
 train_dataset = MovieLensDataset("data/train.csv", user2idx, movie2idx)
 test_dataset  = MovieLensDataset("data/test.csv", user2idx, movie2idx)
 
 train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
 test_loader  = DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=False)
 
-# =========================
 # MODELE
-# =========================
+
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Device : {device}")
 
@@ -56,9 +55,9 @@ model = NeuMF(num_users, num_movies, EMBEDDING_DIM, MLP_LAYERS).to(device)
 criterion = nn.BCEWithLogitsLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=LR)
 
-# =========================
+
 # TRAIN
-# =========================
+
 def train_epoch(model, loader):
     model.train()
     total_loss = 0
@@ -78,9 +77,9 @@ def train_epoch(model, loader):
 
     return total_loss / len(loader)
 
-# =========================
+
 # EVAL
-# =========================
+
 def eval_epoch(model, loader):
     model.eval()
     all_preds, all_labels = [], []
@@ -112,10 +111,10 @@ def eval_epoch(model, loader):
 
     return precision, recall, f1, accuracy
 
-# =========================
+
 # TRAIN LOOP
-# =========================
-print("\nDébut de l'entraînement...")
+
+print("\nDébut de l'entraînement")
 
 for epoch in range(1, EPOCHS + 1):
     train_loss = train_epoch(model, train_loader)
@@ -127,9 +126,8 @@ for epoch in range(1, EPOCHS + 1):
         f"F1: {f1:.4f} | Accuracy: {accuracy:.4f}"
     )
 
-# =========================
 # SAVE MODEL
-# =========================
+
 os.makedirs("data", exist_ok=True)
 
 torch.save({
